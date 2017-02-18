@@ -5,13 +5,16 @@ export default class NoteList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedIndex: undefined
+            selectedIndex: 0,
+            places: []
         }
     }
 
     selectNote(index) {
-        console.log("note index: ", index);
         this.setState({selectedIndex: index});
+
+        // update parent Plan container
+        this.props.selectNote(index);
     }
 
     isActive(index) {
@@ -24,7 +27,7 @@ export default class NoteList extends React.Component {
                 {this.props.notes.map((note, index) => (
                     <li className={`note-card list-group-item ${this.isActive(index)}`} key={index}
                         onClick={this.selectNote.bind(this, index)}>
-                        <Note note={note}/>
+                        <Note note={note} />
                     </li>
                 ))}
             </ul>
@@ -33,5 +36,6 @@ export default class NoteList extends React.Component {
 }
 
 NoteList.propTypes = {
-    notes: React.PropTypes.array.isRequired
+    notes: React.PropTypes.array.isRequired,
+    selectNote: React.PropTypes.func.isRequired,
 };

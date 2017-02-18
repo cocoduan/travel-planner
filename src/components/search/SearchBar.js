@@ -14,15 +14,11 @@ export default class SearchBar extends React.Component {
         this.props.searchPlace(place);
     }
 
-    setRef(ref) {
-        this.place = ref;
-    }
-
     render() {
         return (
             <div className="input-group">
                 <input type="text" className="form-control" placeholder="search a place"
-                ref={(ref) => this.setRef(ref)}/>
+                ref={(ref) => this.place = ref}/>
                 <span className="input-group-btn">
                     <button className="btn btn-default" type="submit"
                     onClick={() => this.handleSubmit()}>Search</button>

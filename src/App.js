@@ -3,13 +3,12 @@ import './App.css';
 import SearchBar from './components/search/SearchBar';
 import Plan from './components/plan/Plan';
 
-class App extends Component {
+export default class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             title: "Untitled map",
-            place: 'place holder',
         }
     }
 
@@ -23,16 +22,15 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="row">
-                    <div className="col-md-4 offset-md-3">
+                    <div className="col-md-6 col-md-offset-3">
                         <SearchBar searchPlace={(place) => this.handleSearchPlace(place)}/>
                     </div>
-                    <div className="col-md-7"></div>
                 </div>
 
                 <div className="row">
                     <div className="col-md-3">
                         <Plan title={this.state.title}
-                              searchedPlace={this.state.place} />
+                              searchPlace={this.state.place} />
                     </div>
                 </div>
 
@@ -40,5 +38,3 @@ class App extends Component {
         );
     }
 }
-
-export default App;

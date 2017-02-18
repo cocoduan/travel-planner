@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules
+src/bootstrap.css
 
 # testing
 coverage
@@ -14,4 +15,5 @@ build
 .env
 npm-debug.log
 
+# ide
 .idea/
