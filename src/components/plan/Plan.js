@@ -3,6 +3,7 @@ import ToolBar from './ToolBar';
 import SearchResult from '../search/SearchResult';
 import NoteList from '../note/NoteList';
 import Rebase from 're-base';
+import Label from '../label/Label';
 
 // define selectedIndex on this.state so that isActive can be re-evaluated when clicking on a li
 
@@ -85,7 +86,7 @@ export default class Plan extends React.Component {
     render() {
         return (
             <div className="card">
-                <h3>{this.props.title}</h3>
+                <Label text={this.props.title}></Label>
 
                 <div className="card-header">
                     <ToolBar onAdd={() => this.addNote()}/>
