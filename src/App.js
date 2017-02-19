@@ -8,7 +8,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "Untitled map",
+            place: null
         }
     }
 
@@ -29,8 +29,7 @@ export default class App extends Component {
 
                 <div className="row">
                     <div className="col-md-3">
-                        <Plan title={this.state.title}
-                              searchPlace={this.state.place} />
+                        <Plan searchPlace={this.state.place} />
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// componentWillReceiveProps()
 export default class Label extends React.Component {
     constructor(props) {
         super(props);
@@ -9,6 +10,13 @@ export default class Label extends React.Component {
         }
     }
 
+    // TODO - why need this?
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            text: nextProps.text
+        });
+    }
+
     // helpers
     inputText;
 
@@ -16,32 +24,52 @@ export default class Label extends React.Component {
         this.setState({inputVisible: !this.state.inputVisible});
     }
 
+    setInputValue() {
+        const value = this.inputText.value;
+        this.setState({text: value});
+        this.props.onChange(value);
+    }
+
     onInputEnter(evt) {
         if (evt.keyCode === 13) {
-            this.setState({text: this.inputText.value});
+            this.setInputValue();
             this.toggleInput();
         }
     }
 
-    render() {
-        return (
-            <div>
-                <div onClick={() => this.toggleInput()}>
-                    {
-                        !this.state.inputVisible && <h3>{this.state.text}</h3>
-                    }
-                </div>
+    onBlur() {
+        this.setInputValue();
+        this.toggleInput();
+    }
 
-                {
-                    this.state.inputVisible && <input type="text" ref={(ref) => this.inputText = ref}
-                                                      placeholder={this.state.text}
-                                                      onKeyDown={(evt) => this.onInputEnter(evt)}></input>
-                }
+    render() {
+        const text = (
+            <p className={this.props.labelClass} onClick={() => this.toggleInput()}>
+                {this.state.text || "Untitled"}
+            </p>
+        );
+
+        const inputBox = (
+            <input type="text" className="form-control" style={{width: "50%"}}
+                   autoFocus
+                   ref={(ref) => this.inputText = ref}
+                   defaultValue={this.state.text}
+                   onKeyDown={(evt) => this.onInputEnter(evt)}
+                   onBlur={() => this.onBlur()}/>
+        );
+
+        return (
+            <div style={{paddingBottom: "15px"}}>
+                {!this.state.inputVisible && text}
+
+                {this.state.inputVisible && inputBox}
             </div>
         );
     }
 }
 
 Label.propTypes = {
-    text: React.PropTypes.string.isRequired
+    text: React.PropTypes.string.isRequired,
+    labelClass: React.PropTypes.string,
+    onChange: React.PropTypes.func.isRequired
 };

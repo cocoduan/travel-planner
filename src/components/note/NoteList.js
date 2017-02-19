@@ -27,7 +27,7 @@ export default class NoteList extends React.Component {
                 {this.props.notes.map((note, index) => (
                     <li className={`note-card list-group-item ${this.isActive(index)}`} key={index}
                         onClick={this.selectNote.bind(this, index)}>
-                        <Note note={note} />
+                        <Note note={note} onUpdateTitle={(title) => this.props.onUpdateNoteTitle(title)}/>
                     </li>
                 ))}
             </ul>
@@ -38,4 +38,5 @@ export default class NoteList extends React.Component {
 NoteList.propTypes = {
     notes: React.PropTypes.array.isRequired,
     selectNote: React.PropTypes.func.isRequired,
+    onUpdateNoteTitle: React.PropTypes.func.isRequired
 };
