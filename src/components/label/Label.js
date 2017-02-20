@@ -1,24 +1,20 @@
 import React from 'react';
 
-// componentWillReceiveProps()
+// rather than defining a text on state, and use componentWillReceiveProps() to update text; to achieve stateless,
+// use this.props.text + onChange handler so the child is in sync with parent
+
+// this.props.text || "Untitled"
+
 export default class Label extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: this.props.text,
             inputVisible: false
         }
-    }
-
-    // TODO - why need this?
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            text: nextProps.text
-        });
+        this.inputText = "";
     }
 
     // helpers
-    inputText;
 
     toggleInput() {
         this.setState({inputVisible: !this.state.inputVisible});
@@ -26,7 +22,7 @@ export default class Label extends React.Component {
 
     setInputValue() {
         const value = this.inputText.value;
-        this.setState({text: value});
+        // this.setState({text: value});
         this.props.onChange(value);
     }
 
@@ -45,15 +41,15 @@ export default class Label extends React.Component {
     render() {
         const text = (
             <p className={this.props.labelClass} onClick={() => this.toggleInput()}>
-                {this.state.text || "Untitled"}
+                {this.props.text || "Untitled"}
             </p>
         );
 
         const inputBox = (
-            <input type="text" className="form-control" style={{width: "50%"}}
+            <input type="text" className="form-control"
                    autoFocus
                    ref={(ref) => this.inputText = ref}
-                   defaultValue={this.state.text}
+                   defaultValue={this.props.text}
                    onKeyDown={(evt) => this.onInputEnter(evt)}
                    onBlur={() => this.onBlur()}/>
         );
@@ -70,6 +66,6 @@ export default class Label extends React.Component {
 
 Label.propTypes = {
     text: React.PropTypes.string.isRequired,
-    labelClass: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
+    labelClass: React.PropTypes.string
 };

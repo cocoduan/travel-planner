@@ -8,6 +8,7 @@ import Label from '../label/Label';
 // define selectedIndex on this.state so that isActive can be re-evaluated when clicking on a li
 // must init empty array, could use places || []
 
+// removedElement = splice(array, start, num); and array will be modified!!
 const base = Rebase.createClass({
     apiKey: "AIzaSyBfP3XRBk2nuIOlHSlsHWwyIHp9e8fE8i8",
     authDomain: "travel-planner-2860d.firebaseio.com",
@@ -25,7 +26,8 @@ export default class Plan extends React.Component {
             place: this.props.searchPlace,
             notes: [],
             title: ""
-        }
+        };
+        this.noteIndex = 0;
     }
 
     componentDidMount() {
@@ -57,8 +59,6 @@ export default class Plan extends React.Component {
     //--------------
     //  helpers
     //--------------
-
-    noteIndex = 0;
 
     addNote() {
         const note = {title: String(this.state.notes.length), places: []};
@@ -95,6 +95,13 @@ export default class Plan extends React.Component {
         }).catch((err) => console.error(err));
     }
 
+    removeNote() {
+        this.state.notes.splice(this.noteIndex, 1);
+        base.post(`/map/notes`, {
+            data: this.state.notes
+        })
+    }
+
     //--------------
     //  render
     //--------------
@@ -115,7 +122,8 @@ export default class Plan extends React.Component {
 
                 <NoteList notes={this.state.notes}
                           selectNote={(index) => this.noteIndex = index}
-                          onUpdateNoteTitle={(title) => this.updateNoteTitle(title)}/>
+                          onUpdateNoteTitle={(title) => this.updateNoteTitle(title)}
+                          onRemoveNote={() => this.removeNote()}/>
             </div>
         );
     }
