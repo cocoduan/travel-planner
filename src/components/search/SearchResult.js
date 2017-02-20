@@ -3,6 +3,8 @@ import React from 'react';
 // Note: onClick={() => this.props.onClose()}, not onClick={this.props.onClose()};
 // the latter is wrong which will return the result of onClose() to onClick immediately...
 
+// d-inline-block (css class)
+
 export default class SearchResult extends React.Component {
     render() {
         return !this.props.place ? null : (

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import SearchBar from './components/search/SearchBar';
 import Plan from './components/plan/Plan';
+import Map from "./components/map/Map";
 
 export default class App extends Component {
 
@@ -13,26 +14,32 @@ export default class App extends Component {
     }
 
     handleSearchPlace(place) {
-        this.setState({
-            place: place
-        });
+        this.setState({place});
     }
 
     render() {
         return (
-            <div className="App">
+            <div className="container-fluid App">
                 <div className="row">
-                    <div className="col-md-6 col-md-offset-3">
-                        <SearchBar searchPlace={(place) => this.handleSearchPlace(place)}/>
-                    </div>
-                </div>
 
-                <div className="row">
                     <div className="col-md-3">
-                        <Plan searchPlace={this.state.place} />
+                        <Plan searchPlace={this.state.place}/>
                     </div>
-                </div>
 
+                    <div className="col-md-9">
+
+                        <div className="row">
+                            <div className="col-md-6">
+                                <SearchBar searchPlace={(place) => this.handleSearchPlace(place)}/>
+                            </div>
+                        </div>
+
+                        <div style={{paddingTop: "15px"}}>
+                            <Map></Map>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         );
     }

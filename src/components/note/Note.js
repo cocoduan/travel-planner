@@ -10,10 +10,21 @@ export default class Note extends React.Component {
             ));
         }
         return (
-            <div style={{minHeight: '60px'}}>
-                <Label text={this.props.note.title} labelClass={"h4"}
-                       onChange={(text) => this.props.onUpdateTitle(text)}>
-                </Label>
+            <div className="container-fluid" style={{minHeight: '60px', padding: "0"}}>
+                <div className="row">
+                    <div className="col-md-7">
+                        <Label text={this.props.note.title}
+                               labelClass={"h4"}
+                               onChange={(text) => this.props.onUpdateTitle(text)}>
+                        </Label>
+                    </div>
+                    <div className="col-md-1 col-md-offset-3">
+                        <button type="button" className="close" style={{float: "left", paddingTop: "5px"}}
+                                onClick={() => this.props.onClose()}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
                 <ul className="list-group">
                     {lists}
                 </ul>
@@ -24,8 +35,9 @@ export default class Note extends React.Component {
 
 Note.propTypes = {
     note: React.PropTypes.object,
+    onUpdateTitle: React.PropTypes.func,
     newPlace: React.PropTypes.string,
-    onUpdateTitle: React.PropTypes.func
+    onClose: React.PropTypes.func.isRequired
 };
 
 // Note {
