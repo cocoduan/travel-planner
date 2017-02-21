@@ -9,12 +9,9 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            place: null
+            place: null,
+            foundAddress: null
         }
-    }
-
-    handleSearchPlace(place) {
-        this.setState({place});
     }
 
     render() {
@@ -23,19 +20,20 @@ export default class App extends Component {
                 <div className="row">
 
                     <div className="col-md-3">
-                        <Plan searchPlace={this.state.place}/>
+                        <Plan searchPlace={this.state.foundAddress}/>
                     </div>
 
                     <div className="col-md-9">
 
                         <div className="row">
                             <div className="col-md-6">
-                                <SearchBar searchPlace={(place) => this.handleSearchPlace(place)}/>
+                                <SearchBar onPlaceChanged={(place) => this.setState({place})}/>
                             </div>
                         </div>
 
                         <div style={{paddingTop: "15px"}}>
-                            <Map></Map>
+                            <Map place={this.state.place}
+                                 onFoundAddress={(foundAddress) => this.setState({foundAddress})}></Map>
                         </div>
                     </div>
 

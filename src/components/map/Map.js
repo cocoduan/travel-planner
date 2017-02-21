@@ -7,13 +7,13 @@ import L from "leaflet";
 
 // name "private" property as _name in constructor if not on state, e.g. this._mapNode = null;
 
-let config = {};
+const config = {};
 config.params = {
     center: [51.505, -0.09],
     zoomControl: false,
     zoom: 13,
-    maxZoom: 19,
-    minZoom: 11,
+    maxZoom: 21,
+    minZoom: 5,
     legends: true,
     infoControl: false,
     attributionControl: true
@@ -28,44 +28,77 @@ config.tileLayer = {
 export default class Map extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            map: null,
-            tileLayer: null
-        };
+
+        this.map = null;
+        this.geocoder = null;
+        this.tileLayer = null;
+        this.marker = null;
+        this.foundAddress = null;
+
         this._mapNode = null;
     }
 
     componentDidMount() {
         // create the Leaflet map object
-        if (!this.state.map) this.init(this._mapNode);
-        this.state.map.on('click', this.onMapClick);
+        if (!this.map) this.init(this._mapNode);
+        /*eslint-disable */
+        this.geocoder = new google.maps.Geocoder();
+        /*eslint-enable */
     }
 
     componentWillUnmount() {
-        this.state.map.off('click', this.onMapClick);
-        this.state.map.remove();
+        this.map.remove();
     }
 
-    onMapClick() {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.place) {
+            this.geocodeAddress(nextProps.place);
+        }
+    }
 
+    geocodeAddress(address) {
+        this.geocoder.geocode({address}, (results, status) => {
+            /*eslint-disable */
+            if (status === google.maps.GeocoderStatus.OK) {
+                /*eslint-enable */
+                const result = results[0];
+
+                // found address
+                this.foundAddress = result.formatted_address;
+                this.onFoundAddress(this.foundAddress);
+
+                const location = result.geometry.location;
+                const latLng = [location.lat(), location.lng()];
+                this.map.setView(latLng);
+                this.marker.setLatLng(latLng);
+            }
+        });
+    }
+
+    onFoundAddress(address) {
+        this.props.onFoundAddress(address);
     }
 
     init(id) {
-        if (this.state.map) return;
+        if (this.map) return;
         // this function creates the Leaflet map object and is called after the Map component mounts
         let map = L.map(id, config.params);
         L.control.zoom({ position: "bottomleft"}).addTo(map);
         L.control.scale({ position: "bottomleft"}).addTo(map);
 
         // a TileLayer is used as the "basemap"
-        const tileLayer = L.tileLayer(config.tileLayer.uri, config.tileLayer.params).addTo(map);
+        this.tileLayer = L.tileLayer(config.tileLayer.uri, config.tileLayer.params).addTo(map);
 
-        // set our state to include the tile layer
-        this.setState({ map, tileLayer });
+        this.marker = L.marker(config.params.center).addTo(map);
+        this.map = map;
     }
-
 
     render() {
         return <div ref={(node) => this._mapNode = node} className="map-container"></div>;
     }
 }
+
+Map.PropTypes = {
+    place: React.PropTypes.string,
+    onFoundAddress: React.PropTypes.func.isRequired
+};

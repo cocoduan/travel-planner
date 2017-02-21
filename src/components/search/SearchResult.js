@@ -8,7 +8,7 @@ import React from 'react';
 export default class SearchResult extends React.Component {
     render() {
         return !this.props.place ? null : (
-            <div style={{paddingLeft: "15px", paddingBottom: "15px", paddingRight: "15px"}}>
+            <div className="bg-info" style={{padding: "15px", borderRadius: "5px", marginBottom: "10px"}}>
                 <button type="button" className="close" style={{float: "left", paddingRight: "15px"}}
                         onClick={() => this.props.onClose()}>
                     <span aria-hidden="true">&times;</span>

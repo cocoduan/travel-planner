@@ -1,17 +1,18 @@
 import React from 'react';
 
 export default class SearchBar extends React.Component {
+
     handleSubmit() {
         const newPlace = this.place.value;
         this.place.value = '';
         console.log('newPlace is : ', newPlace);
 
         // submit newPlace
-        this.searchPlace(newPlace);
+        this.onPlaceChanged(newPlace);
     }
 
-    searchPlace(place) {
-        this.props.searchPlace(place);
+    onPlaceChanged(place) {
+        this.props.onPlaceChanged(place);
     }
 
     render() {
@@ -29,5 +30,7 @@ export default class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-    searchPlace : React.PropTypes.func.isRequired
+    onPlaceChanged : React.PropTypes.func.isRequired
 };
+
+// Place {name: XXX, address: xxx}
